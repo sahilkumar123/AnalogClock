@@ -10,19 +10,51 @@
 	//console.log(radius);
 	ctx.translate(radius,radius);
 	radius = radius*0.90;
-	drawClock();
+	
+	setInterval(drawClock,300);
+
 	function drawClock()
 	{
 		drawFace(ctx,radius);
 		drawNumbers(ctx,radius);
+		drawTime(ctx,radius);
+	}
+	function drawTime(ctx,radius){
+			var time = new Date();
+			var hours = time.getHours();
+			var min = time.getMinutes();
+			var sec = time.getSeconds();
+			console.log(min);
+			console.log(sec);
+			hours = hours % 12;
+			console.log(hours);
+			hours = (hours * Math.PI / 6) + (min * Math.PI /(6*60) )+ (sec * Math.PI /(6* 60*60));
+			drawHandle(ctx,hours,radius*0.5,radius*0.07);
+
+			min = (min * Math.PI / 30) + (sec * Math.PI /(60 * 30));
+			drawHandle(ctx,min,radius*0.7,radius*0.05);
+
+			sec = (sec * Math.PI / 30);
+			drawHandle(ctx,sec,radius*0.9,radius*0.02);
+
+	}
+	function  drawHandle(ctx,pos,length,width) {
+		ctx.beginPath();
+		ctx.lineWidth = width;
+		ctx.lineCap = "round";
+		ctx.moveTo(0,0);
+		ctx.rotate(pos);
+		ctx.lineTo(0,-length);
+		ctx.stroke();
+		ctx.rotate(-pos);
 	}
 	function drawNumbers(ctx,radius)
 	{
 		var ang;
 		var num;
 		ctx.font = radius*0.15 + "px arial";
-		//ctx.textBaseline = "middle";
-		//ctx.textAlign = "center";
+		ctx.textBaseline = "middle";
+		ctx.textAlign = "center";
 		for(num = 1;num<13;num++)
 	{	
 			
